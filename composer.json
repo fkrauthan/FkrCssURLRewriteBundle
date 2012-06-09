@@ -1,0 +1,22 @@
+{
+	"name": "fkr/cssurlrewrite-bundle",
+	"type": "symfony-bundle",
+	"description": "A small assetic filter for symfony to fix all url paths at css documents to correct urls",
+	"keywords": ["Assetic", "Symfony Bundle", "css", "asset", "css url", "rewrite"],
+	"homepage": "https://github.com/fkrauthan/FkrCssURLRewriteBundle",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Florian Krauthan",
+			"email": "fkrauthan@gmx.net"
+		}
+	],
+	"require": {
+		"php": ">=5.3.2",
+		"symfony/framework-bundle": "2.1.*",
+	},
+	"autoload": {
+		"psr-0": { "Fkr\\CssURLRewriteBundle": "" }
+	},
+	"target-dir": "Fkr/CssURLRewriteBundle"
+}
