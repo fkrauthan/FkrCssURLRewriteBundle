@@ -24,12 +24,13 @@
 			$bundlePath = $this->__calculateBundlePath();
 			
 			global $that;
-			$that = this;
+			$that = $this;
 			
 			$content = $asset->getContent();
 			$content = preg_replace_callback('|(url)\((["\']?)(.+)\)|i', function($matches) {
+				global $that;
 				if(!$that->checkPath($matches[3])) {
-					return return $matches[1].'('.$matches[2].$matches[3].')';
+					return $matches[1].'('.$matches[2].$matches[3].')';
 				}
 				
 				global $bundlePath;
@@ -49,7 +50,7 @@
 				$url = substr($url, 0, -1);
 			}
 			
-			return file_exists(dirname($this->asset->getSourcePath().'/'.$url);
+			return file_exists(dirname($this->asset->getSourcePath()).'/'.$url);
 		}
 		
 		private function __calculateBundlePath() {
