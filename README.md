@@ -58,15 +58,15 @@ Add SimplePieBundle to your application kernel
 Usage
 =====
 
-If you place your css file for example  in 
+If you place your css file for example in 
 
 	.../BundleFolder/Resources/public/css 
 
 and you have your images in
 
-	Resources/public/img
+	../BundleFolder/Resources/public/img
 
-then you should write in your css file 
+then you have in yours css file somthing like this
 
 	background-image: url(../img/MyImageName.png)
 
@@ -87,3 +87,15 @@ Now the filter rewrites your url in your css file
 	background-image: url(../img/MyImageName.png) => background-image: url(../bundles/bundlename/css/../img/MyImageName.png)
 	
 And everything works fine.
+
+
+Note
+====
+
+This plugins rewrite *ALL* url taks he can find. Maybe in the future he checks first if a image exists on this path before rewrite the url.
+
+
+Licence
+=======
+
+[Resources/meta/LICENSE](https://github.com/fkrauthan/FkrCssURLRewriteBundle/blob/master/Resources/meta/LICENSE)
