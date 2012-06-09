@@ -26,12 +26,12 @@ This can be done in three different ways:
 
 **Method #3**) Use deps file
 	
-	[FkrImagineBundle]
+	[FkrCssURLRewriteBundle]
 	    git=git://github.com/fkrauthan/FkrCssURLRewriteBundle.git
 		target=bundles/Fkr/CssURLRewriteBundle
 
 
-Register the Imagine and Fkr namespaces
+Register the Fkr namespaces
 -----------------------------------------
 	
     // app/autoload.php
