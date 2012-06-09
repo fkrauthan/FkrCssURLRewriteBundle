@@ -7,15 +7,31 @@
 
 	class CssURLRewriteFilter implements FilterInterface {
 		
+		private $rewriteIfFileExists;
+		private $asset;
+		
+		public function __constructor($rewriteIfFileExists) {
+			$this->rewriteIfFileExists = $rewriteIfFileExists;
+		}
+		
 		public function filterLoad(AssetInterface $asset) {
 		}
 		
 		public function filterDump(AssetInterface $asset) {
+			$this->asset = $asset;
+			
 			global $bundlePath;
-			$bundlePath = $this->__calculateBundlePath($asset);
+			$bundlePath = $this->__calculateBundlePath();
+			
+			global $that;
+			$that = this;
 			
 			$content = $asset->getContent();
 			$content = preg_replace_callback('|(url)\((["\']?)(.+)\)|i', function($matches) {
+				if(!$that->checkPath($matches[3])) {
+					return return $matches[1].'('.$matches[2].$matches[3].')';
+				}
+				
 				global $bundlePath;
 				return $matches[1].'('.$matches[2].$bundlePath.'/'.$matches[3].')';
 			}, $content);
@@ -23,14 +39,27 @@
 			$asset->setContent($content);
 		}
 		
-		private function __calculateBundlePath(AssetInterface $asset) {
-			$path = dirname($asset->getSourcePath());
-			$path = substr($path, strpos($path, '/public/')+8);
-			return $this->__calculateSwitchPath($asset).$this->__calculateBundleName($asset).'/'.$path;
+		public function checkPath($url) {
+			if(!$this->rewriteIfFileExists) {
+				return true;
+			}
+			
+			$lastChar = substr($url, -1);
+			if($lastChar=='"' || $lastChar=='\'') {
+				$url = substr($url, 0, -1);
+			}
+			
+			return file_exists(dirname($this->asset->getSourcePath().'/'.$url);
 		}
 		
-		private function __calculateBundleName(AssetInterface $asset) {
-			$routePathSplitted = explode('/', $asset->getSourceRoot());
+		private function __calculateBundlePath() {
+			$path = dirname($this->asset->getSourcePath());
+			$path = substr($path, strpos($path, '/public/')+8);
+			return $this->__calculateSwitchPath().$this->__calculateBundleName().'/'.$path;
+		}
+		
+		private function __calculateBundleName() {
+			$routePathSplitted = explode('/', $this->asset->getSourceRoot());
 			$numElements = count($routePathSplitted);
 			$bundleName = strtolower(substr($routePathSplitted[$numElements-1], 0, strrpos($routePathSplitted[$numElements-1], 'Bundle')));
 			$prefix = 'bundles/';
@@ -46,8 +75,8 @@
 			}
 		}
 		
-		private function __calculateSwitchPath(AssetInterface $asset) {
-			$targetPath = dirname($asset->getTargetPath());
+		private function __calculateSwitchPath() {
+			$targetPath = dirname($this->asset->getTargetPath());
 			$numDirs = substr_count($targetPath, '/')+1;
 			
 			$output = '';

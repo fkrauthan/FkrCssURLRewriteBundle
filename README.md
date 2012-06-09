@@ -55,6 +55,17 @@ Add SimplePieBundle to your application kernel
     }
 
 
+Configuration
+=============
+
+    # app/config.yml
+    fkr_css_url_rewrite:
+        rewrite_if_file_exists: true
+
+
+* rewrite_if_file_exists: If true only rewrites url if the resource exists in the .../BundleFolder/Resources/public/ folder.
+
+
 Usage
 =====
 
@@ -87,12 +98,6 @@ Now the filter rewrites your url in your css file
 	background-image: url(../img/MyImageName.png) => background-image: url(../bundles/bundlename/css/../img/MyImageName.png)
 	
 And everything works fine.
-
-
-Note
-====
-
-This plugins rewrite *ALL* url taks he can find. Maybe in the future he checks first if a image exists on this path before rewrite the url.
 
 
 Licence
