@@ -10,7 +10,7 @@
 		private $rewriteIfFileExists;
 		private $asset;
 		
-		public function __constructor($rewriteIfFileExists) {
+		public function __construct($rewriteIfFileExists) {
 			$this->rewriteIfFileExists = $rewriteIfFileExists;
 		}
 		
@@ -49,8 +49,7 @@
 			if($lastChar=='"' || $lastChar=='\'') {
 				$url = substr($url, 0, -1);
 			}
-			
-			return file_exists(dirname($this->asset->getSourcePath()).'/'.$url);
+			return file_exists($this->asset->getSourceRoot().'/'.dirname($this->asset->getSourcePath()).'/'.$url);
 		}
 		
 		private function __calculateBundlePath() {
