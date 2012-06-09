@@ -41,7 +41,7 @@ Register the Fkr namespaces
     ));
 
 
-Add SimplePieBundle to your application kernel
+Add CssURLRewriteBundle to your application kernel
 ----------------------------------------------
 	
 	// app/AppKernel.php
