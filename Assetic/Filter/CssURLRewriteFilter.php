@@ -20,7 +20,7 @@
 		public function filterDump(AssetInterface $asset) {
 			$this->asset = $asset;
 			
-			$bundlePath = $this->__calculateBundlePath();
+			$bundlePath = $this->calculateBundlePath();
 			$that = $this;
 			
 			$content = $asset->getContent();
@@ -50,7 +50,7 @@
 		private function calculateBundlePath() {
 			$path = dirname($this->asset->getSourcePath());
 			$path = substr($path, strpos($path, '/public/')+8);
-			return $this->__calculateSwitchPath().$this->__calculateBundleName().'/'.$path;
+			return $this->calculateSwitchPath().$this->calculateBundleName().'/'.$path;
 		}
 		
 		private function calculateBundleName() {
