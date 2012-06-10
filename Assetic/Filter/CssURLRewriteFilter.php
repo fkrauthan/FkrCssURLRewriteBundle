@@ -20,20 +20,15 @@
 		public function filterDump(AssetInterface $asset) {
 			$this->asset = $asset;
 			
-			global $bundlePath;
 			$bundlePath = $this->__calculateBundlePath();
-			
-			global $that;
 			$that = $this;
 			
 			$content = $asset->getContent();
-			$content = preg_replace_callback('|(url)\((["\']?)(.+)\)|i', function($matches) {
-				global $that;
+			$content = preg_replace_callback('|(url)\((["\']?)(.+)\)|i', function($matches) use ($that, $bundlePath) {
 				if(!$that->checkPath($matches[3])) {
 					return $matches[1].'('.$matches[2].$matches[3].')';
 				}
 				
-				global $bundlePath;
 				return $matches[1].'('.$matches[2].$bundlePath.'/'.$matches[3].')';
 			}, $content);
 			
@@ -52,13 +47,13 @@
 			return file_exists($this->asset->getSourceRoot().'/'.dirname($this->asset->getSourcePath()).'/'.$url);
 		}
 		
-		private function __calculateBundlePath() {
+		private function calculateBundlePath() {
 			$path = dirname($this->asset->getSourcePath());
 			$path = substr($path, strpos($path, '/public/')+8);
 			return $this->__calculateSwitchPath().$this->__calculateBundleName().'/'.$path;
 		}
 		
-		private function __calculateBundleName() {
+		private function calculateBundleName() {
 			$routePathSplitted = explode('/', $this->asset->getSourceRoot());
 			$numElements = count($routePathSplitted);
 			$bundleName = strtolower(substr($routePathSplitted[$numElements-1], 0, strrpos($routePathSplitted[$numElements-1], 'Bundle')));
@@ -75,7 +70,7 @@
 			}
 		}
 		
-		private function __calculateSwitchPath() {
+		private function calculateSwitchPath() {
 			$targetPath = dirname($this->asset->getTargetPath());
 			$numDirs = substr_count($targetPath, '/')+1;
 			
