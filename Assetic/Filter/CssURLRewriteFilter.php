@@ -97,7 +97,7 @@
 			return $output;
 		}
 		
-		private function checkPath($url) {
+		public function checkPath($url) {
 			if(!$this->rewriteIfFileExists) {
 				return true;
 			}
