@@ -1,6 +1,9 @@
 <?php
 	namespace Fkr\CssURLRewriteBundle\Assetic\Filter;
 
+	use Symfony\Component\HttpKernel\KernelInterface;
+	use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
+	
 	use Assetic\Asset\AssetInterface;
 	use Assetic\Filter\FilterInterface;
 
@@ -8,10 +11,14 @@
 	class CssURLRewriteFilter implements FilterInterface {
 		
 		private $rewriteIfFileExists;
+		private $kernel;
+		
 		private $asset;
 		
-		public function __construct($rewriteIfFileExists) {
+		
+		public function __construct($rewriteIfFileExists, KernelInterface $kernel) {
 			$this->rewriteIfFileExists = $rewriteIfFileExists;
+			$this->kernel = $kernel;
 		}
 		
 		public function filterLoad(AssetInterface $asset) {
@@ -19,8 +26,11 @@
 		
 		public function filterDump(AssetInterface $asset) {
 			$this->asset = $asset;
-			
 			$bundlePath = $this->calculateBundlePath();
+			if($bundlePath === null) {
+				return;
+			}
+			
 			$that = $this;
 			
 			$content = $asset->getContent();
@@ -28,46 +38,41 @@
 				if(!$that->checkPath($matches[3])) {
 					return $matches[1].'('.$matches[2].$matches[3].')';
 				}
-				
 				return $matches[1].'('.$matches[2].$bundlePath.'/'.$matches[3].')';
 			}, $content);
-			
 			$asset->setContent($content);
-		}
-		
-		public function checkPath($url) {
-			if(!$this->rewriteIfFileExists) {
-				return true;
-			}
 			
-			$lastChar = substr($url, -1);
-			if($lastChar=='"' || $lastChar=='\'') {
-				$url = substr($url, 0, -1);
-			}
-			return file_exists($this->asset->getSourceRoot().'/'.dirname($this->asset->getSourcePath()).'/'.$url);
+			$that = $this;
 		}
 		
 		private function calculateBundlePath() {
-			$path = dirname($this->asset->getSourcePath());
-			$path = substr($path, strpos($path, '/public/')+8);
-			return $this->calculateSwitchPath().$this->calculateBundleName().'/'.$path;
+			foreach($this->kernel->getBundles() as $bundle) {
+				if(strstr($this->asset->getSourceRoot(), $bundle->getPath()) !== false) {
+					if($bundle->getContainerExtension()) {
+						return $this->calculateSwitchPath().'bundles/'.str_replace('_', '', $bundle->getContainerExtension()->getAlias()).'/'.$this->calculatePathSuffix();
+					}
+				}
+			}
+			return null;
 		}
 		
-		private function calculateBundleName() {
-			$routePathSplitted = explode('/', $this->asset->getSourceRoot());
-			$numElements = count($routePathSplitted);
-			$bundleName = strtolower(substr($routePathSplitted[$numElements-1], 0, strrpos($routePathSplitted[$numElements-1], 'Bundle')));
-			$prefix = 'bundles/';
+		private function calculatePathSuffix() {
+			$sourcePath = dirname($this->asset->getSourcePath());
+			return $this->getSubstringAfterNString($sourcePath, '/', 2);
+		}
+		
+		private function getSubstringAfterNString($string, $searchString, $afterN) {
+			$i=0;
+			$pos = -1;
+			while(($pos=strpos($string, $searchString, $pos+1)) !== false) {
+				$i++;
+				
+				if($i==$afterN) {
+					return substr($string, $pos+1);
+				}
+			}
 			
-			if($numElements >= 5 && $routePathSplitted[$numElements-3]=='Bundle') {
-				return $prefix.strtolower($routePathSplitted[$numElements-4]).strtolower($routePathSplitted[$numElements-2]).$bundleName;
-			}
-			else if($numElements >= 3 && $routePathSplitted[$numElements-2]=='Bundle') {
-				return $prefix.strtolower($routePathSplitted[$numElements-3]).$bundleName;
-			}
-			else {
-				return $prefix.strtolower($routePathSplitted[$numElements-2]).$bundleName;
-			}
+			return '';
 		}
 		
 		private function calculateSwitchPath() {
@@ -79,7 +84,30 @@
 				$output .= '../';
 			}
 			
+			if(substr($targetPath, 0, 11) == '_controller') {
+				try {
+					$request = $this->kernel->getContainer()->get('request');
+					if(substr($request->getBaseUrl(), -4) != '.php') {
+						$output = substr($output, 3);
+					}
+				} catch(InactiveScopeException $e) {
+				}
+			}
+			
 			return $output;
+		}
+		
+		private function checkPath($url) {
+			if(!$this->rewriteIfFileExists) {
+				return true;
+			}
+			
+			$lastChar = substr($url, -1);
+			if($lastChar=='"' || $lastChar=='\'') {
+				$url = substr($url, 0, -1);
+			}
+			
+			return file_exists($this->asset->getSourceRoot().'/'.dirname($this->asset->getSourcePath()).'/'.$url);
 		}
 
 	}
