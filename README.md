@@ -69,6 +69,8 @@ Configuration
 Usage
 =====
 
+**Standard usage**
+
 If you place your css file for example in 
 
 	.../BundleFolder/Resources/public/css 
@@ -98,6 +100,16 @@ Now the filter rewrites your url in your css file
 	background-image: url(../img/MyImageName.png) => background-image: url(../bundles/bundlename/css/../img/MyImageName.png)
 	
 And everything works fine.
+
+**Extended usage**
+
+You can link images from other bundles by using the @ annotation. For example if you write this in you css file
+
+	background-image: url(@BundleNameBundle/img/MyImageName.png)
+
+Now the filter rewrite this url in your css file
+
+	background-image: url(@BundleNameBundle/img/MyImageName.png) => background-image: url(../bundles/bundlename/img/MyImageName.png)
 
 
 Licence

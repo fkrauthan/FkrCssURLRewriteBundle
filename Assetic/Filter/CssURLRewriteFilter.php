@@ -35,7 +35,11 @@
 			
 			$content = $asset->getContent();
 			$content = preg_replace_callback('|(url)\((["\']?)(.+)\)|i', function($matches) use ($that, $bundlePath) {
-				if(!$that->checkPath($matches[3])) {
+				$tmpPath = $this->checkForBundleLinking($matches[3]);
+				if($tmpPath != null) {
+					return $matches[1].'('.$matches[2].$tmpPath.')';
+				}
+				else if(!$that->checkPath($matches[3])) {
 					return $matches[1].'('.$matches[2].$matches[3].')';
 				}
 				return $matches[1].'('.$matches[2].$bundlePath.'/'.$matches[3].')';
@@ -43,6 +47,19 @@
 			$asset->setContent($content);
 			
 			$that = $this;
+		}
+		
+		private function checkForBundleLinking($path) {
+			if(substr($path, 0, 1) == '@') {
+				$findChar = strpos($path, '/');
+				$bundleName = substr($path, 1, $findChar);
+				try {
+					$bundle = $this->kernel->getBundle($bundleName);
+					return $this->calculateSwitchPath().'bundles/'.str_replace('_', '', $bundle->getContainerExtension()->getAlias()).substr($path, $findChar);
+				} catch(\InvalidArgumentException $e) {
+				}
+			}
+			return null;
 		}
 		
 		private function calculateBundlePath() {
