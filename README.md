@@ -1,7 +1,7 @@
 FkrCssURLRewriteBundle
 ======================
 
-A small assetic filter for Symfony2 to fix all url paths in css documents to correct urls
+A small assetic filter for Symfony2 to fix all url paths in css documents to correct urls. It also provides easy resource linking across platforms.
 
 
 Installation
