@@ -49,7 +49,7 @@
 			$that = $this;
 		}
 		
-		private function checkForBundleLinking($path) {
+		public function checkForBundleLinking($path) {
 			if(substr($path, 0, 1) == '@') {
 				$findChar = strpos($path, '/');
 				$bundleName = substr($path, 1, $findChar);
