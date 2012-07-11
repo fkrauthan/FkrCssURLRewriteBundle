@@ -35,7 +35,7 @@
 			
 			$content = $asset->getContent();
 			$content = preg_replace_callback('|(url)\((["\']?)(.+)\)|i', function($matches) use ($that, $bundlePath) {
-				$tmpPath = $this->checkForBundleLinking($matches[3]);
+				$tmpPath = $that->checkForBundleLinking($matches[3]);
 				if($tmpPath != null) {
 					return $matches[1].'('.$matches[2].$tmpPath.')';
 				}
