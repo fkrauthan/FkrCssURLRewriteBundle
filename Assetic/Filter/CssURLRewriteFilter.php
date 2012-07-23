@@ -34,7 +34,7 @@
 			$that = $this;
 			
 			$content = $asset->getContent();
-			$content = preg_replace_callback('|(url)\((["\']?)(.+)\)|i', function($matches) use ($that, $bundlePath) {
+			$content = preg_replace_callback('|(url)\((["\']?)([^\)]+)\)|i', function($matches) use ($that, $bundlePath) {
 				$tmpPath = $that->checkForBundleLinking($matches[3]);
 				if($tmpPath != null) {
 					return $matches[1].'('.$matches[2].$tmpPath.')';
@@ -45,8 +45,6 @@
 				return $matches[1].'('.$matches[2].$bundlePath.'/'.$matches[3].')';
 			}, $content);
 			$asset->setContent($content);
-			
-			$that = $this;
 		}
 		
 		public function checkForBundleLinking($path) {
