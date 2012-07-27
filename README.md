@@ -61,9 +61,11 @@ Configuration
     # app/config.yml
     fkr_css_url_rewrite:
         rewrite_if_file_exists: true
+        clear_urls: true
 
 
-* rewrite_if_file_exists: If true only rewrites url if the resource exists in the .../BundleFolder/Resources/public/ folder.
+* rewrite_if_file_exists: If true (default) only rewrites url if the resource exists in the .../BundleFolder/Resources/public/ folder.
+* clear_urls: If true (default) the generated url gets normalized. For example if the url normaly is `.../less/../img` this option makes `.../img`.
 
 
 Usage

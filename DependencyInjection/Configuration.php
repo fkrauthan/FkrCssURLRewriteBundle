@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
 			->children()
 				->scalarNode('rewrite_if_file_exists')->defaultValue(true)->end()
+				->scalarNode('clear_urls')->defaultValue(true)->end()
 			->end();
 
         return $treeBuilder;

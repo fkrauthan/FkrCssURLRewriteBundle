@@ -11,13 +11,15 @@
 	class CssURLRewriteFilter implements FilterInterface {
 		
 		private $rewriteIfFileExists;
+		private $clearUrls;
 		private $kernel;
 		
 		private $asset;
 		
 		
-		public function __construct($rewriteIfFileExists, KernelInterface $kernel) {
+		public function __construct($rewriteIfFileExists, $clearUrls, KernelInterface $kernel) {
 			$this->rewriteIfFileExists = $rewriteIfFileExists;
+			$this->clearUrls = $clearUrls;
 			$this->kernel = $kernel;
 		}
 		
@@ -42,7 +44,7 @@
 				else if(!$that->checkPath($matches[3])) {
 					return $matches[1].'('.$matches[2].$matches[3].')';
 				}
-				return $matches[1].'('.$matches[2].$bundlePath.'/'.$matches[3].')';
+				return $matches[1].'('.$matches[2].$that->normalizeUrl($bundlePath.'/'.$matches[3]).')';
 			}, $content);
 			$asset->setContent($content);
 		}
@@ -123,6 +125,19 @@
 			}
 			
 			return file_exists($this->asset->getSourceRoot().'/'.dirname($this->asset->getSourcePath()).'/'.$url);
+		}
+		
+		public function normalizeUrl($url) {
+			if(!$this->clearUrls) {
+				return $url;
+			}
+			
+			$pattern = '/\w+\/\.\.\//';
+			while(preg_match($pattern, $url)) {
+				$url = preg_replace($pattern, '', $url);
+			}
+			
+			return $url;
 		}
 
 	}
