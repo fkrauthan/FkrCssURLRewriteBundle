@@ -52,7 +52,7 @@
 		public function checkForBundleLinking($path) {
 			if(substr($path, 0, 1) == '@') {
 				$findChar = strpos($path, '/');
-				$bundleName = substr($path, 1, $findChar);
+				$bundleName = substr($path, 1, $findChar-1);
 				try {
 					$bundle = $this->kernel->getBundle($bundleName);
 					return $this->calculateSwitchPath().'bundles/'.str_replace('_', '', $bundle->getContainerExtension()->getAlias()).substr($path, $findChar);
