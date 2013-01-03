@@ -123,8 +123,9 @@
 			if($lastChar=='"' || $lastChar=='\'') {
 				$url = substr($url, 0, -1);
 			}
-			
-			return file_exists($this->asset->getSourceRoot().'/'.dirname($this->asset->getSourcePath()).'/'.$url);
+
+			return file_exists($this->asset->getSourceRoot().'/'.dirname($this->asset->getSourcePath()).'/'.$url) ||
+				file_exists($this->asset->getSourceRoot().'/'.dirname($this->asset->getSourcePath()).'/'.strtok($url, '?'));
 		}
 		
 		public function normalizeUrl($url) {
