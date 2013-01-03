@@ -18,5 +18,6 @@
 	"autoload": {
 		"psr-0": { "Fkr\\CssURLRewriteBundle": "" }
 	},
-	"target-dir": "Fkr/CssURLRewriteBundle"
+	"target-dir": "Fkr/CssURLRewriteBundle",
+    "minimum-stability": "dev"
 }
