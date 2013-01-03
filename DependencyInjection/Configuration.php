@@ -21,10 +21,10 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('fkr_css_url_rewrite');
 
         $rootNode
-			->children()
-				->scalarNode('rewrite_if_file_exists')->defaultValue(true)->end()
-				->scalarNode('clear_urls')->defaultValue(true)->end()
-			->end();
+            ->children()
+                ->scalarNode('rewrite_if_file_exists')->defaultValue(true)->end()
+                ->scalarNode('clear_urls')->defaultValue(true)->end()
+            ->end();
 
         return $treeBuilder;
     }
