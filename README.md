@@ -14,10 +14,11 @@ This can be done in three different ways:
 
 **Method #1**) Use composer
 
-    "require": {
-        "fkr/cssurlrewrite-bundle": "*"
-    }
-
+~~~~~ json
+"require": {
+    "fkr/cssurlrewrite-bundle": "*"
+}
+~~~~~
 
 **Method #2**) Use git submodules
 
@@ -33,36 +34,40 @@ This can be done in three different ways:
 
 Register the Fkr namespaces
 -----------------------------------------
-	
-    // app/autoload.php
-    $loader->registerNamespaces(array(
-        'Fkr' => __DIR__.'/../vendor/bundles',
-        // your other namespaces
-    ));
+
+~~~~~ php
+// app/autoload.php
+$loader->registerNamespaces(array(
+    'Fkr' => __DIR__.'/../vendor/bundles',
+    // your other namespaces
+));
+~~~~~
 
 
 Add CssURLRewriteBundle to your application kernel
 ----------------------------------------------
-	
-	// app/AppKernel.php
-    public function registerBundles()
-    {
-        return array(
-            // ...
-            new Fkr\CssURLRewriteBundle\FkrCssURLRewriteBundle(),
-            // ...
-        );
-    }
 
+~~~~~ php
+// app/AppKernel.php
+public function registerBundles()
+{
+    return array(
+        // ...
+        new Fkr\CssURLRewriteBundle\FkrCssURLRewriteBundle(),
+        // ...
+    );
+}
+~~~~~
 
 Configuration
 =============
 
-    # app/config.yml
-    fkr_css_url_rewrite:
-        rewrite_if_file_exists: true
-        clear_urls: true
-
+~~~~~ yml
+# app/config.yml
+fkr_css_url_rewrite:
+    rewrite_if_file_exists: true
+    clear_urls: true
+~~~~~ 
 
 * rewrite_if_file_exists: If true (default) only rewrites url if the resource exists in the .../BundleFolder/Resources/public/ folder.
 * clear_urls: If true (default) the generated url gets normalized. For example if the url normaly is `.../less/../img` this option makes `.../img`.
@@ -83,7 +88,9 @@ and you have your images in
 
 then you have in yours css file somthing like this
 
-	background-image: url(../img/MyImageName.png)
+~~~~~ css
+background-image: url(../img/MyImageName.png)
+~~~~~
 
 Now you have to call
  
