@@ -5,13 +5,13 @@
 
 	<parameters>
 		<parameter key="fkr_css_url_rewrite.css_url_rewrite.class">Fkr\CssURLRewriteBundle\Assetic\Filter\CssURLRewriteFilter</parameter>
-		<parameter key="fkr_css_url_rewrite.css_url_rewrite.rewrite_if_file_exists">%fkr_css_url_rewrite.css_url_rewrite.rewrite_if_file_exists%</parameter>
+		<parameter key="fkr_css_url_rewrite.css_url_rewrite.rewrite_only_if_file_exists">%fkr_css_url_rewrite.css_url_rewrite.rewrite_only_if_file_exists%</parameter>
 		<parameter key="fkr_css_url_rewrite.css_url_rewrite.clear_urls">%fkr_css_url_rewrite.css_url_rewrite.clear_urls%</parameter>
 	</parameters>
 
 	<services>
 		<service id="fkr_css_url_rewrite.css_url_fixer" class="%fkr_css_url_rewrite.css_url_rewrite.class%">
-			<argument>%fkr_css_url_rewrite.css_url_rewrite.rewrite_if_file_exists%</argument>
+			<argument>%fkr_css_url_rewrite.css_url_rewrite.rewrite_only_if_file_exists%</argument>
 			<argument>%fkr_css_url_rewrite.css_url_rewrite.clear_urls%</argument>
 			<argument type="service" id="kernel" />
 			<tag name="assetic.filter" alias="css_url_rewrite"></tag>

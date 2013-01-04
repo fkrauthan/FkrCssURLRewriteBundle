@@ -22,7 +22,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('rewrite_if_file_exists')->defaultValue(true)->end()
+                ->scalarNode('rewrite_only_if_file_exists')->defaultValue(true)->end()
                 ->scalarNode('clear_urls')->defaultValue(true)->end()
             ->end();
 

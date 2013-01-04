@@ -25,7 +25,7 @@ class FkrCssURLRewriteExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
-        $container->setParameter('fkr_css_url_rewrite.css_url_rewrite.rewrite_if_file_exists', $config['rewrite_if_file_exists']);
+        $container->setParameter('fkr_css_url_rewrite.css_url_rewrite.rewrite_only_if_file_exists', $config['rewrite_only_if_file_exists']);
         $container->setParameter('fkr_css_url_rewrite.css_url_rewrite.clear_urls', $config['clear_urls']);
     }
 }

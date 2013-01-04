@@ -9,15 +9,15 @@ use Assetic\Filter\FilterInterface;
 
 class CssURLRewriteFilter implements FilterInterface
 {
-    private $rewriteIfFileExists;
+    private $rewriteOnlyIfFileExists;
     private $clearUrls;
     private $kernel;
 
     private $asset;
 
-    public function __construct($rewriteIfFileExists, $clearUrls, KernelInterface $kernel)
+    public function __construct($rewriteOnlyIfFileExists, $clearUrls, KernelInterface $kernel)
     {
-        $this->rewriteIfFileExists = $rewriteIfFileExists;
+        $this->rewriteOnlyIfFileExists = $rewriteOnlyIfFileExists;
         $this->clearUrls = $clearUrls;
         $this->kernel = $kernel;
     }
@@ -126,7 +126,7 @@ class CssURLRewriteFilter implements FilterInterface
 
     public function checkPath($url)
     {
-        if (!$this->rewriteIfFileExists) {
+        if (!$this->rewriteOnlyIfFileExists) {
             return true;
         }
 
