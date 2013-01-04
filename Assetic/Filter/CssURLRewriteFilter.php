@@ -135,7 +135,8 @@ class CssURLRewriteFilter implements FilterInterface
             $url = substr($url, 0, -1);
         }
 
-        return file_exists($this->asset->getSourceRoot().'/'.dirname($this->asset->getSourcePath()).'/'.$url);
+        $basePath = $this->asset->getSourceRoot().'/'.dirname($this->asset->getSourcePath()).'/';
+        return file_exists($basePath.$url) || file_exists($basePath.strtok($url, '?')) || file_exists($basePath.strtok($url, '#'));
     }
 
     public function normalizeUrl($url)
