@@ -35,6 +35,9 @@ This can be done in three different ways:
 Register the Fkr namespaces
 -----------------------------------------
 
+If not using composer, register the `Fkr` namespace with Symfony's
+autoloader:
+
 ~~~~~ php
 // app/autoload.php
 $loader->registerNamespaces(array(
