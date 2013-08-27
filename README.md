@@ -124,7 +124,7 @@ Now the filter rewrite this url in your css file
 	background-image: url(@BundleNameBundle/img/MyImageName.png) => background-image: url(../bundles/bundlename/img/MyImageName.png)
 
 
-Licence
+License
 =======
 
 [Resources/meta/LICENSE](https://github.com/fkrauthan/FkrCssURLRewriteBundle/blob/master/Resources/meta/LICENSE)
