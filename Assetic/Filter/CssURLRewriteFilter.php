@@ -90,7 +90,7 @@ class CssURLRewriteFilter implements FilterInterface
     {
         $i=0;
         $pos = -1;
-        while (($pos=strpos($string, $searchString, $pos+1)) !== false) {
+        while (($pos = strpos($string, $searchString, $pos + 1)) !== false) {
             $i++;
 
             if ($i==$afterN) {
@@ -104,10 +104,10 @@ class CssURLRewriteFilter implements FilterInterface
     private function calculateSwitchPath()
     {
         $targetPath = dirname($this->asset->getTargetPath());
-        $numDirs = substr_count($targetPath, '/')+1;
+        $numDirs = substr_count($targetPath, '/') + 1;
 
         $output = '';
-        for ($i=0; $i<$numDirs; $i++) {
+        for ($i=0; $i < $numDirs; $i++) {
             $output .= '../';
         }
 
@@ -115,17 +115,13 @@ class CssURLRewriteFilter implements FilterInterface
             try {
                 $request = null;
                 
-                 if ($this->container->has('request_stack')) {
-                    
-                     $request = $this->kernel->getContainer()->get('request_stack')->getCurrentRequest();
-                     
-                } elseif (method_exists($this->container, 'isScopeActive') && $this->container->isScopeActive('request')) {
-                    
-                     $request = $this->kernel->getContainer()->get('request');
-                     
+                if ($this->kernel->getContainer()->has('request_stack')) {
+                    $request = $this->kernel->getContainer()->get('request_stack')->getCurrentRequest();
+                } else {
+                    $request = $this->kernel->getContainer()->get('request');
                 }
                 
-                if (substr($request->getBaseUrl(), -4) != '.php') {
+                if ($request && substr($request->getBaseUrl(), -4) != '.php') {
                     $output = substr($output, 3);
                 }
             } catch (InactiveScopeException $e) {
