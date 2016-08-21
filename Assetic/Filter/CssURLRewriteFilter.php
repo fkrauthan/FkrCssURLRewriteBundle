@@ -41,6 +41,8 @@ class CssURLRewriteFilter implements FilterInterface
             $tmpPath = $that->checkForBundleLinking($matches[3]);
             if ($tmpPath != null) {
                 return $matches[1].'('.$matches[2].$tmpPath.')';
+            } elseif (substr($matches[3],0,5) == "data:") {
+                return $matches[1].'('.$matches[2].$matches[3].')';
             } elseif (!$that->checkPath($matches[3])) {
                 return $matches[1].'('.$matches[2].$matches[3].')';
             }
